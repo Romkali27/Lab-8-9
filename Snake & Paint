@@ -1,0 +1,71 @@
+import pygame
+pygame.quit()
+```
+
+---
+
+### Рисовалка (Paint App) на Pygame
+
+```python
+import pygame
+
+# Инициализация Pygame
+pygame.init()
+
+# Константы экрана
+WIDTH, HEIGHT = 600, 400
+display = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Рисовалка")
+
+# Цвета
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+BLUE = (0, 0, 255)
+GREEN = (0, 255, 0)
+
+# Переменные для рисования
+drawing = False
+shape = "rectangle"
+color = BLACK
+
+def draw_shape(surface, x, y, shape, color):
+    if shape == "rectangle":
+        pygame.draw.rect(surface, color, (x, y, 50, 50))
+    elif shape == "circle":
+        pygame.draw.circle(surface, color, (x, y), 25)
+    elif shape == "triangle":
+        pygame.draw.polygon(surface, color, [(x, y), (x + 50, y), (x + 25, y - 50)])
+    elif shape == "rhombus":
+        pygame.draw.polygon(surface, color, [(x, y), (x + 25, y - 25), (x + 50, y), (x + 25, y + 25)])
+
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_r:
+                shape = "rectangle"
+            elif event.key == pygame.K_c:
+                shape = "circle"
+            elif event.key == pygame.K_t:
+                shape = "triangle"
+            elif event.key == pygame.K_b:
+                shape = "rhombus"
+            elif event.key == pygame.K_1:
+                color = RED
+            elif event.key == pygame.K_2:
+                color = BLUE
+            elif event.key == pygame.K_3:
+                color = GREEN
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            drawing = True
+        elif event.type == pygame.MOUSEBUTTONUP:
+            drawing = False
+        elif event.type == pygame.MOUSEMOTION and drawing:
+            x, y = event.pos
+            draw_shape(display, x, y, shape, color)
+    
+    pygame.display.flip()
+pygame.quit()
